@@ -20,6 +20,7 @@ I will skip an instructions on installing node.js and HomeBridge as it is well d
 * Device require authorization in a form of authorization_token provided in a body of request.
 * Every command that we expose require arguments provided in a body of request.
 * Current device does not support some characteristics that we want to expose, such as hue and saturation.
+
 All items above required some minor modifications in the code, the final solution you can find [here](ParticleAccessory.js). You can copy it into your accessories folder of HomeBridge to use. With this implementation Particle.io HUE device could be configured in JSON as following.
 
 ```
