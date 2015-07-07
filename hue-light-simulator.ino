@@ -1,15 +1,15 @@
 boolean gPowerState = true;
-float gHue = 0.5;
+float gHue = 1;
 float gSaturation = 1;
-float gBrightness = 0.4;
+float gBrightness = 1;
 
 void setup()
 {
    RGB.control(true);
-   
+
    updateLED();
 
-   //Exposed internal functions as cloud API   
+   //Exposed internal functions as cloud API
    Spark.function("powerState", powerState);
    Spark.function("hue", hue);
    Spark.function("saturation", saturation);
@@ -20,12 +20,12 @@ void setup()
 
 int powerState(String value) {
     int result = -1;
-    
+
     if (value.length() > 0) {
         gPowerState = (value.toInt() == 1);
         result = gPowerState;
     }
-    
+
     updateLED();
 
     return result;
@@ -33,7 +33,7 @@ int powerState(String value) {
 
 int hue(String value) {
     int result = -1;
-    
+
     if (value.length() > 0) {
         gHue = (float)value.toInt() / 100.0;
         result = hue.toInt();
@@ -46,12 +46,12 @@ int hue(String value) {
 
 int saturation(String value) {
     int result = -1;
-    
+
     if (value.length() > 0) {
         gSaturation = (float)value.toInt() / 100.0;
         result = value.toInt();
     }
-    
+
     updateLED();
 
     return result;
@@ -59,7 +59,7 @@ int saturation(String value) {
 
 int brightness(String value) {
     int result = -1;
-    
+
     if (value.length() > 0) {
         gBrightness = (float)value.toInt() / 100.0;
         result = value.toInt();
@@ -105,6 +105,6 @@ void updateLED() {
     if (gPowerState) {
         applyHSL(gHue, gSaturation, gBrightness);
     } else {
-        applyHSL(0, 0, 0);        
+        applyHSL(0, 0, 0);
     }
 }
