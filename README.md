@@ -1,5 +1,5 @@
 # Siri + HomeKit + Particle.io + HomeBridge + Node.JS
-I recently built a home automation PoC with a Particle.io, HomeBridge node.js framework and  HomeKit: [![video](https://www.dropbox.com/s/wfb5unfd5a8fkt8/vimeo.png?dl=1)](http://vimeo.com/nikitaleonov/siri-homekit-particle "video") ]
+I recently built a home automation PoC with a Particle.io, HomeBridge node.js framework and  HomeKit: [![video](https://www.dropbox.com/s/wfb5unfd5a8fkt8/vimeo.png?dl=1)](http://vimeo.com/nikitaleonov/siri-homekit-particle "video")
 Video got some traction in specialized communities and I got a request explain how this is done. So, here it is, a guide how to build similar thing at home.
 
 # Particle.io
