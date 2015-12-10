@@ -41,9 +41,9 @@ ParticleAccessory.prototype = {
     var function_url = this.functionUrl(name, device_url);
 
     console.log('Calling function ' + name + ' with value ' + value + '.');
-
+    
     var request_data = {'value' : value, 'access_token': this.access_token};
-
+   
     this.httpRequest(function_url, "POST", request_data, function(error, response, body) {
       if (error) {
         console.error('Http request for function ' + name + ' failed:', error);
