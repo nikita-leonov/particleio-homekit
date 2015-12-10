@@ -1,4 +1,6 @@
-var types = require("HAP-NodeJS/accessories/types.js");
+var types = require("../api").homebridge.hapLegacyTypes;
+var Service = require("../api").homebridge.hap.Service;
+var Characteristic = require("../api").homebridge.hap.Characteristic;
 var request = require("request");
 
 function ParticleAccessory(log, config) {
@@ -190,3 +192,4 @@ ParticleAccessory.prototype = {
 };
 
 module.exports.accessory = ParticleAccessory;
+
