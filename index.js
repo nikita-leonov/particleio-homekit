@@ -4,7 +4,7 @@ var request = require("request");
 module.exports = function(homebridge) {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  
+  Types = homebridge.hap.Types;
   homebridge.registerAccessory("homebridge-particle", "Particle", ParticleAccessory);
 }
 
