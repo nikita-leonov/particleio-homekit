@@ -1,7 +1,12 @@
-var types = require("../api").homebridge.hapLegacyTypes;
-var Service = require("../api").homebridge.hap.Service;
-var Characteristic = require("../api").homebridge.hap.Characteristic;
+var types, Service, Characteristic;
 var request = require("request");
+
+module.exports = function(homebridge) {
+  Service = homebridge.hap.Service;
+  Characteristic = homebridge.hap.Characteristic;
+  
+  homebridge.registerAccessory("homebridge-particle", "Particle", ParticleAccessory);
+}
 
 function ParticleAccessory(log, config) {
   this.log = log;
@@ -41,7 +46,7 @@ ParticleAccessory.prototype = {
     var function_url = this.functionUrl(name, device_url);
 
     console.log('Calling function ' + name + ' with value ' + value + '.');
-    
+
     var request_data = {'value' : value, 'access_token': this.access_token};
    
     this.httpRequest(function_url, "POST", request_data, function(error, response, body) {
