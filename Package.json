@@ -8,10 +8,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/pedroserano/particleio-homekit.git"
+    "url": "git://github.com/pedroserano/homebridge-particle.git"
   },
   "bugs": {
-    "url": "http://github.com/pedroserano/particleio-homekit/issues"
+    "url": "http://github.com/pedroserano/homebridge-particle/issues"
   },
   "engines": {
     "node": ">=0.12.0",
