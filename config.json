@@ -1,7 +1,7 @@
 {
     "accessories": [
         {
-        "accessory": "Particle",
+        "accessory": "homebridge-particle",
         "name": "Particle Sensor",
         "platform_url": "https://api.particle.io/v1",
         "device_id": "53ff69066678505521262467",
