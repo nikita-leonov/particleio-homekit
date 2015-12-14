@@ -1,5 +1,5 @@
 var Service, Characteristic;
-var types = require("HAP-NodeJS/accessories/types.js");
+var types = require("node_modules/hap-nodejs/accessories/types.js");
 var request = require("request");
 
 module.exports = function(homebridge) {
