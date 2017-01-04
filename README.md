@@ -7,10 +7,10 @@ My goal was to expose [Particle.io](http://particle.io) hardware features to be 
 
 With the code above I was able to control all planned characteristics of device by a simple curl commands like following:
 ```
-curl -X POST https://api.particle.io/v1/devices/53ff69063678505521262467/powerState -d "value=1" -d access_token=44864d2eb7e2837fec72b8272df66acc95f44386
-curl -X POST https://api.particle.io/v1/devices/53ff69063678505521262467/hue -d "value=65" -d access_token=44864d2eb7e2837fec72b8272df66acc95f44386
-curl -X POST https://api.particle.io/v1/devices/53ff69063678505521262467/saturation -d "value=75" -d access_token=44864d2eb7e2837fec72b8272df66acc95f44386
-curl -X POST https://api.particle.io/v1/devices/53ff69063678505521262467/brightness -d "value=60" -d access_token=44864d2eb7e2837fec72b8272df66acc95f44386
+curl -X POST https://api.particle.io/v1/devices/xxxxxxxxxxxx/powerState -d "value=1" -d access_token=xxxxxxxxxxxx
+curl -X POST https://api.particle.io/v1/devices/xxxxxxxxxxxx/hue -d "value=65" -d access_token=xxxxxxxxxxxx
+curl -X POST https://api.particle.io/v1/devices/xxxxxxxxxxxx/saturation -d "value=75" -d access_token=xxxxxxxxxxxx
+curl -X POST https://api.particle.io/v1/devices/xxxxxxxxxxxx/brightness -d "value=60" -d access_token=xxxxxxxxxxxx
 ```
 
 This is how simple it is to control real hardware over internet with Particle.io
@@ -31,8 +31,8 @@ All items above required some minor modifications in the code, the final solutio
             "accessory": "ParticleAccessory",
             "name": "Particle",
             "platform_url": "https://api.particle.io/v1",
-            "device_id": "53ff69063678505521262467",
-            "access_token": "44864d2eb7e2837fec72b8272df66acc95f44386"
+            "device_id": "xxxxxxxxxxxx",
+            "access_token": "xxxxxxxxxxxx"
         }
     ]
 }
