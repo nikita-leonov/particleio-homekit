@@ -28,8 +28,8 @@ All items above required some minor modifications in the code, the final solutio
 {
     "accessories": [
         {
-            "accessory": "ParticleAccessory",
-            "name": "Particle",
+            "accessory": "Particle",
+            "name": "Particle Sensor",
             "platform_url": "https://api.particle.io/v1",
             "device_id": "xxxxxxxxxxxx",
             "access_token": "xxxxxxxxxxxx"

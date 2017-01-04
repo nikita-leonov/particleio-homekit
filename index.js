@@ -1,5 +1,13 @@
-var types = require("HAP-NodeJS/accessories/types.js");
+var Service, Characteristic;
+var types = require("node_modules/hap-nodejs/accessories/types.js");
 var request = require("request");
+
+module.exports = function(homebridge) {
+  Service = homebridge.hap.Service;
+  Characteristic = homebridge.hap.Characteristic;
+  types = homebridge.hap.Types;
+  homebridge.registerAccessory("homebridge-particle", "Particle", ParticleAccessory);
+}
 
 function ParticleAccessory(log, config) {
   this.log = log;
@@ -41,7 +49,7 @@ ParticleAccessory.prototype = {
     console.log('Calling function ' + name + ' with value ' + value + '.');
 
     var request_data = {'value' : value, 'access_token': this.access_token};
-
+   
     this.httpRequest(function_url, "POST", request_data, function(error, response, body) {
       if (error) {
         console.error('Http request for function ' + name + ' failed:', error);
@@ -190,3 +198,4 @@ ParticleAccessory.prototype = {
 };
 
 module.exports.accessory = ParticleAccessory;
+
