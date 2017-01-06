@@ -1,3 +1,5 @@
+#include "math.h"
+
 int gPowerState = 1;
 float gHue = 1;
 float gSaturation = 1;
@@ -36,10 +38,11 @@ int powerState(String value) {
 }
 
 int hue(String value) {
+    delay(200);
     int result = -1;
     if (value.length() > 0) {
         float hueFloat = value.toFloat();
-        gHue = hueFloat / 360.0;
+        gHue = hueFloat;// / 360.0;
         result = value.toInt();
     }
     updateLED();
@@ -47,6 +50,7 @@ int hue(String value) {
 }
 
 int saturation(String value) {
+    delay(200);
     int result = -1;
     if (value.length() > 0) {
         float saturationFloat = value.toFloat();
@@ -58,6 +62,7 @@ int saturation(String value) {
 }
 
 int brightness(String value) {
+    delay(200);
     int result = -1;
 
     if (value.length() > 0) {
@@ -73,47 +78,63 @@ int brightness(String value) {
 
 /* LED color manipulation methods */
 
-void hslToRgb(float h, float s, float l){
-    float tempR, tempG, tempB;
-    int r, g, b;
+void hsvToRgb(float h, float s, float v) {
+	float r, g, b;
+	int i;
+	float f, p, q, t;
 
-    if(l == 0){
-        ledControl(0,0,0);
-    }
-    if(s == 0){
-        r = g = b = l; // achromatic
-    }else{
-        float q = l < 0.5 ? l * (1.0 + s) : l + s - l * s;
-        float p = 2.0 * l - q;
-        tempR = hue2rgb(p, q, h + 1.0/3.0);
-        tempG = hue2rgb(p, q, h);
-        tempB = hue2rgb(p, q, h - 1.0/3.0);
-    }
-    
-    r = round(tempR * 255);
-    g = round(tempG * 255);
-    b = round(tempB * 255);
+	if(s == 0) {
+		// Achromatic (grey)
+		r = g = b = v;
+		ledControl(round(r * 255), round(g * 255), round(b * 255));
+	}
 
-    ledControl(r,g,b);
-}
-
-float hue2rgb(float p, float q, float t){
-    if(t < 0.0){ 
-        t += 1.0;
-    }
-    if(t > 1.0){
-        t -= 1.0;
-    }
-    if(t < 1.0/6.0){
-        return p + (q - p) * 6.0 * t;
-    }
-    if(t < 1.0/2.0) {
-        return q;
-    }
-    if(t < 2.0/3.0) {
-        return p + (q - p) * (2.0/3.0 - t) * 6.0;
-    }
-    return p;
+	h /= 60; // sector 0 to 5
+	
+	i = floor(h);
+	f = h - i; // factorial part of h
+	p = v * (1 - s);
+	q = v * (1 - s * f);
+	t = v * (1 - s * (1 - f));
+ 
+	switch(i) {
+		case 0:
+			r = v;
+			g = t;
+			b = p;
+			break;
+ 
+		case 1:
+			r = q;
+			g = v;
+			b = p;
+			break;
+ 
+		case 2:
+			r = p;
+			g = v;
+			b = t;
+			break;
+ 
+		case 3:
+			r = p;
+			g = q;
+			b = v;
+			break;
+ 
+		case 4:
+			r = t;
+			g = p;
+			b = v;
+			break;
+ 
+		default: // case 5:
+			r = v;
+			g = p;
+			b = q;
+	}
+ 
+	ledControl(round(r * 255), round(g * 255), round(b * 255));
 }
 
 void ledControl(int redValue, int greenValue, int blueValue)
@@ -127,7 +148,7 @@ void ledControl(int redValue, int greenValue, int blueValue)
 // Only update if turned on
 void updateLED() {
     if (gPowerState) {
-        hslToRgb(gHue, gSaturation, gBrightness);
+        hsvToRgb(gHue, gSaturation, gBrightness);
     } else {
         ledControl(0,0,0);
     }
