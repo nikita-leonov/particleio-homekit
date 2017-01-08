@@ -1,67 +1,73 @@
-boolean gPowerState = true;
+#include "math.h"
+
+int gPowerState = 1;
 float gHue = 1;
 float gSaturation = 1;
 float gBrightness = 1;
 
-void setup()
-{
-   RGB.control(true);
+int redPin = A0;    // RED pin of the LED to PWM pin **A0**
+int greenPin = D0;  // GREEN pin of the LED to PWM pin **D0**
+int bluePin = D1;   // BLUE pin of the LED to PWM pin **D1**
 
-   updateLED();
+void setup() {
+   pinMode(redPin, OUTPUT);
+   pinMode(greenPin, OUTPUT);
+   pinMode(bluePin, OUTPUT);
 
    //Exposed internal functions as cloud API
-   Spark.function("powerState", powerState);
-   Spark.function("hue", hue);
-   Spark.function("saturation", saturation);
-   Spark.function("brightness", brightness);
+   Particle.function("powerState", powerState);
+   Particle.function("hue", hue);
+   Particle.function("saturation", saturation);
+   Particle.function("brightness", brightness);
+}
+
+void loop() {
+    /* Do nothing */
 }
 
 /* Cloud methods */
 
 int powerState(String value) {
-    int result = -1;
-
+    int result = 1;
     if (value.length() > 0) {
         gPowerState = (value.toInt() == 1);
         result = gPowerState;
     }
-
     updateLED();
-
     return result;
 }
 
 int hue(String value) {
+    delay(200);
     int result = -1;
-
     if (value.length() > 0) {
-        gHue = (float)value.toInt() / 100.0;
-        result = hue.toInt();
+        float hueFloat = value.toFloat();
+        gHue = hueFloat;// / 360.0;
+        result = value.toInt();
     }
-
     updateLED();
-
     return result;
 }
 
 int saturation(String value) {
+    delay(200);
     int result = -1;
-
     if (value.length() > 0) {
-        gSaturation = (float)value.toInt() / 100.0;
+        float saturationFloat = value.toFloat();
+        gSaturation = saturationFloat / 100.0;
         result = value.toInt();
     }
-
     updateLED();
-
     return result;
 }
 
 int brightness(String value) {
+    delay(200);
     int result = -1;
 
     if (value.length() > 0) {
-        gBrightness = (float)value.toInt() / 100.0;
+        float brightnessFloat = value.toFloat();
+        gBrightness = value.toFloat() / 100.0;
         result = value.toInt();
     }
 
@@ -72,39 +78,78 @@ int brightness(String value) {
 
 /* LED color manipulation methods */
 
-float hueToRGB(float p, float q, float t) {
-    if(t < 0.0) t += 1.0;
-    if(
-    if(t < 1.0/6.0) return p + (q - p) * 6.0 * t;
-    if(t < 1.0/2.0) return q;
-    if(t < 2.0/3.0) return p + (q - p) * (2.0/3.0 - t) * 6.0;
+void hsvToRgb(float h, float s, float v) {
+	float r, g, b;
+	int i;
+	float f, p, q, t;
 
-    return p;
+	if(s == 0) {
+		// Achromatic (grey)
+		r = g = b = v;
+		ledControl(round(r * 255), round(g * 255), round(b * 255));
+	}
+
+	h /= 60; // sector 0 to 5
+	
+	i = floor(h);
+	f = h - i; // factorial part of h
+	p = v * (1 - s);
+	q = v * (1 - s * f);
+	t = v * (1 - s * (1 - f));
+ 
+	switch(i) {
+		case 0:
+			r = v;
+			g = t;
+			b = p;
+			break;
+ 
+		case 1:
+			r = q;
+			g = v;
+			b = p;
+			break;
+ 
+		case 2:
+			r = p;
+			g = v;
+			b = t;
+			break;
+ 
+		case 3:
+			r = p;
+			g = q;
+			b = v;
+			break;
+ 
+		case 4:
+			r = t;
+			g = p;
+			b = v;
+			break;
+ 
+		default: // case 5:
+			r = v;
+			g = p;
+			b = q;
+	}
+ 
+	ledControl(round(r * 255), round(g * 255), round(b * 255));
 }
 
-void applyHSL(float h, float s, float l) {
-    float r = 0;
-    float g = 0;
-    float b = 0;
-
-    if(s == 0) {
-        r = g = b = l;
-    } else {
-        float q = l < 0.5 ? l * (1.0 + s) : l + s - l * s;
-        float p = 2.0 * l - q;
-        r = hueToRGB(p, q, h + 1.0/3.0);
-        g = hueToRGB(p, q, h);
-        b = hueToRGB(p, q, h - 1.0/3.0);
-    }
-
-    RGB.color((int)(r*255.0), (int)(g*255.0), (int)(b*255.0));
-    RGB.brightness((int)(l*255.0));
+void ledControl(int redValue, int greenValue, int blueValue)
+{
+   // write the mixed color
+   analogWrite(redPin, redValue);
+   analogWrite(greenPin, greenValue);
+   analogWrite(bluePin, blueValue);
 }
 
+// Only update if turned on
 void updateLED() {
     if (gPowerState) {
-        applyHSL(gHue, gSaturation, gBrightness);
+        hsvToRgb(gHue, gSaturation, gBrightness);
     } else {
-        applyHSL(0, 0, 0);
+        ledControl(0,0,0);
     }
 }
